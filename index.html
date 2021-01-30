@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--Header and Menu Section-->
+    <header class="container">
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a class="active" href="#">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!--Booking Section-->
+    <main class="main-content container">
+        <div class="booking-form">
+            <div id="booking-area">
+                <h3>Booking Flights</h3>
+                <div class="input-group">
+                    <label for="">Flying From</label>
+                    <input id="flyingFrom" class="inp-style" type="text" name="" placeholder="Dhaka, Bangladesh">
+                </div>
+                <div class="input-group">
+                    <label for="">Flying To</label>
+                    <input id="flyingTo" class="inp-style" type="text" name="" placeholder="New York, United States">
+                </div>
+                <div class="inputs">
+                    <div class="input-group">
+                        <label" for="">Departure</label>
+                            <input id="departureDate" class="inp-style" type="date" name="">
+                    </div>
+                    <div class="input-group">
+                        <label for="">Return</label>
+                        <input id="returnDate" class="inp-style" type="date" name="">
+                    </div>
+                </div>
+                <div class="input-group f-class">
+                    <div>
+                        <label for="">First Class ($150)</label>
+                        <input id="firstClassInput" class="inp-style inp-width" type="number" name="" value="0">
+                    </div>
+                    <div class="plus-minus-btn">
+                        <button onclick="handleTicketChange('firstClass',true);" id="firstClassIncrease"
+                            class="button">+</button>
+                        <button onclick="handleTicketChange('firstClass',false);" id="firstClassDecrease"
+                            class="button">-</button>
+                    </div>
+                </div>
+
+                <div class="input-group f-class">
+                    <div>
+                        <label for="">Economy ($100)</label>
+                        <input id="economyInput" class="inp-style inp-width" type="number" name="" value="0">
+                    </div>
+                    <div class="plus-minus-btn">
+                        <button onclick="handleTicketChange('economy',true);" id="economyIncrease"
+                            class="button">+</button>
+                        <button onclick="handleTicketChange('economy', false);" id="economyDecrease"
+                            class="button">-</button>
+                    </div>
+                </div>
+                <div class="calculations">
+                    <div class="amount">
+                        <div class="left">
+                            <p>Subtotal</p>
+                        </div>
+                        <div class="right">
+                            <p>$ <span id="subtotal"> 0</span></p>
+                        </div>
+                    </div>
+                    <div class="amount">
+                        <div class="left">
+                            <p>Charge 10% VAT</p>
+                        </div>
+                        <div class="right">
+                            <p>$ <span id="tax"> 0</span></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="amount">
+                        <div class="left">
+                            <h4>Total</h4>
+                        </div>
+                        <div class="right">
+                            <p>$ <span id="grandTotal"> 0</span></p>
+                        </div>
+                    </div>
+                    <button id="bookingButton" class="btn-style">Book Now</button>
+                    <h3>Conditions:</h3>
+                    <ul>
+                        <li>*The authority preserves the right to cancel / postpone the flight.</li>
+                        <li>*If you want to cancel/change the ticket after confirmation:
+                            <ul id="nestedList">
+                                <li>*Before 24 hours of the flight : 10% deduction from &nbsp&nbsp&nbsp&nbsp the total
+                                    cost.</li>
+                                <li>*otherwise: 25% deduction.</li>
+                        </li>*Before 2 hours: no change/cashback.</li>
+                    </ul>
+                    </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="confirmationArea">
+                <h1 id="confirmation-header">Please Confirm your booking</h1>
+                <br><br>
+                <h4>You have booked <span id="firstClassConfirmation" class="special-span">0</span> first class and
+                    <span id="economyConfirmation" class="special-span">0</span> economy tickets.<br><br> Your total
+                    cost is $ <span id="totalCostConfirmation" class="special-span">0</span>. <br><br>You are flying
+                    from <span id="countryConfirmation" class="special-span"></span> to <span
+                    id="destinationConfirmation" class="special-span"></span>.<br><br> Your journey starts on <span
+                    id="startingDate" class="special-span"></span> and you return on <span
+                    id="returningDate" class="special-span"></span>. <br><br> Please be careful; once you click the "confirm" button, you won't be able to change it.
+                </h4>
+                <button id="recheckButton">Edit</button>
+                <button id="confirmationButton">Confirm</button>
+            </div>
+        </div>
+        <div class="booking-content">
+            <h1 id="introduction-heading">Fly with us <br> Discover the world</h1>
+            <p id="aboutParagraph">We are committed to uphold On-Time Performance, Superior Services, Safety and Comfort. This is country’s one of the best airline 
+                ,becomes passengers first choice for air travel.</p>
+        </div>
+        </section>
+        <script>
+            //Handling both increase and decrease of both first class and economy class
+            function handleTicketChange(ticketCategory, isIncrease) {
+                const input = document.getElementById(ticketCategory + "Input").value; //checking whether it is first class or economy ticket
+                let currentInputNum = parseInt(input);
+                let newInputNum = currentInputNum;
+                if (isIncrease == true) { //checking whether to increase or decrease
+                    newInputNum = currentInputNum + 1;
+                }
+                if (isIncrease == false && currentInputNum > 0) { //Ticket value cannot be negative
+                    newInputNum = currentInputNum - 1;
+                }
+                document.getElementById(ticketCategory + "Input").value = newInputNum;
+                getFinalCost();
+            }
+
+
+            // sets subtotal, tax and total
+            function getFinalCost() {
+                //calculating subtotal
+                let firstClassTickets = document.getElementById("firstClassInput").value;
+                let economyTickets = document.getElementById("economyInput").value;
+                const subtotal = firstClassTickets * 150 + economyTickets * 100;
+                document.getElementById("subtotal").innerText = subtotal;
+                //calculating tax
+                const tax = subtotal * 0.1; //tax is 10% of the subtotal
+                document.getElementById("tax").innerText = tax;
+                //calculating grand total
+                const grandTotal = subtotal + tax;
+                document.getElementById("grandTotal").innerText = grandTotal;
+            }
+
+
+            //ticket number confirmation
+            function getTicketNumberConfirmation() {
+                document.getElementById("firstClassConfirmation").innerText = document.getElementById("firstClassInput").value;
+                document.getElementById("economyConfirmation").innerText = document.getElementById("economyInput").value;
+            }
+
+
+            //total cost confirmation
+            function getTotalConfirmation() {
+                let firstClassTickets = document.getElementById("firstClassInput").value;
+                let economyTickets = document.getElementById("economyInput").value;
+                let totalCost = (firstClassTickets * 150 + economyTickets * 100) + (firstClassTickets * 150 + economyTickets * 100) * 0.1;
+                /** One first class ticket costs $150, One economy ticket costs $100. Calculating the subtotal multiplying
+                the ticket prices by their numbers
+                and then adding 10% tax with the subtotal to get the total.*/
+                document.getElementById("totalCostConfirmation").innerText = totalCost;
+            }
+
+
+            //getting the places form where users start and finish their journey
+            function getPlacesConfirmation() {
+                if (document.getElementById("flyingFrom").value == "") {
+                    document.getElementById("countryConfirmation").innerText = "Dhaka, Bangladesh";
+                } else {
+                    document.getElementById("countryConfirmation").innerText = document.getElementById("flyingFrom").value;
+                }
+                if (document.getElementById("flyingTo").value == "") {
+                    document.getElementById("destinationConfirmation").innerText = "New York, United States";
+                } else {
+                    document.getElementById("destinationConfirmation").innerText = document.getElementById("flyingTo").value;
+                }
+            }
+
+
+            // confirming departure and return date
+            function getDates() {
+                if (document.getElementById("departureDate").value == "") {
+                    document.getElementById("startingDate").innerText = "0000/00/00";
+                } else {
+                    document.getElementById("startingDate").innerText = document.getElementById("departureDate").value;
+                }
+                if (document.getElementById("returnDate").value == "") {
+                    document.getElementById("returningDate").innerText = "0000/00/00";
+                } else {
+                    document.getElementById("returningDate").innerText = document.getElementById("returnDate").value;
+                }
+            }
+
+
+            function displayAreas(id, value){
+                document.getElementById(id).style.display = value;   
+            }
+
+
+            //Confirmation of the booking
+            document.getElementById("bookingButton").addEventListener("click", function () {
+                displayAreas("booking-area", "none");
+                displayAreas("confirmationArea", "block");
+                getTicketNumberConfirmation();
+                getTotalConfirmation();
+                getPlacesConfirmation();
+                getDates();
+            });
+
+
+            // setting recheck button events
+            document.getElementById("recheckButton").addEventListener("click", function () {
+                displayAreas("booking-area", "block");
+                displayAreas("confirmationArea", "none");
+            });
+
+
+            //changing confirmation button
+            function changeConfirmationButton() {
+                document.getElementById("confirmationButton").innerText = "Confirmed!";
+                document.getElementById("confirmationButton").style.backgroundColor = "green";
+                document.getElementById("confirmationButton").disabled = "true";
+            }
+
+
+            // recheck button changing
+            function changeRecheckButton() {
+                const recheckButton = document.getElementById("recheckButton");
+                recheckButton.disabled = "true";
+                recheckButton.style.backgroundColor = "rgba(255,0,0,0.1)";
+                recheckButton.style.borderColor = "rgba(255,0,0,0.01)";
+                recheckButton.style.color = "slategray";
+            }
+
+
+            //setting confirmation button events
+            document.getElementById("confirmationButton").addEventListener("click", function () {
+                changeConfirmationButton();
+                // last time confirmation
+                alert("Your booking is being confirmed. Your flight name is 'NewYorkNew'. Flight departure time is 10:00 am. You are requested to come before at least 2 hours, as per schedule. Thank you.");
+                changeRecheckButton()
+            });
+        </script>
+        <!--Thank You-->
+</body>
+
+</html>
