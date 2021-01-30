@@ -189,12 +189,12 @@ a.active {
     font-size: 20px;
     border-radius: 10%;
     box-shadow: 5px 5px 10px gray;
-    border-color: lightskyblue;
+    border-color: lawngreen;
 }
 
 #confirmationButton {
-    margin-left: 80px;
-    background-color: royalblue;
+    margin-left: 130px;
+    background-color: navy;
     color: white;
     width: 120px;
 }
